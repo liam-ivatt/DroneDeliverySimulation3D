@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Delivery Simulation</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #1a1a1a;
+            color: white;
+            display: flex;
+            height: 100vh;
+        }
+
+        #threejs-container {
+            flex: 1;
+            position: relative;
+        }
+
+        #controls-panel {
+            width: 300px;
+            background: #2a2a2a;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .control-section {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #3a3a3a;
+            border-radius: 8px;
+        }
+
+        .control-section h3 {
+            margin: 0 0 10px 0;
+            color: #4CAF50;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+
+        #orderQueue, #actionLog {
+            background: #1a1a1a;
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+
+        #actionLog div {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .stat-item {
+            background: #1a1a1a;
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #ccc;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #4CAF50;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div id="threejs-container">
+        <div id="loading">Loading 3D Simulation...</div>
+    </div>
+    
+    <div id="controls-panel">
+        <div class="control-section">
+            <h3>Simulation Controls</h3>
+            <button id="startBtn" onclick="startSimulation()">Start Simulation</button>
+            <button id="resetBtn" onclick="resetSimulation()">Reset</button>
+            <button id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
+        </div>
+
+        <div class="control-section">
+            <h3>Statistics</h3>
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="totalOrders">0</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="deliveredOrders">0</div>
+                    <div class="stat-label">Delivered</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="activeVehicles">0</div>
+                    <div class="stat-label">Active Vehicles</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="packagesInTransit">0</div>
+                    <div class="stat-label">Packages</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-section">
+            <h3>Order Queue</h3>
+            <div id="orderQueue">No active orders</div>
+        </div>
+
+        <div class="control-section">
+            <h3>Action Log</h3>
+            <div id="actionLog"></div>
+        </div>
+
+        <div class="control-section">
+            <h3>Camera Controls</h3>
+            <p style="font-size: 12px; color: #ccc;">
+                • Left click + drag: Rotate<br>
+                • Right click + drag: Pan<br>
+                • Mouse wheel: Zoom<br>
+                • Space: Reset camera
+            </p>
+        </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+    <script src="/src/pathfinding.js"></script>
+</body>
+</html>
